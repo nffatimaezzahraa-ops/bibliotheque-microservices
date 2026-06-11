@@ -1,0 +1,37 @@
+services:
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+
+  livre-service:
+    build: ./livre-service
+    ports:
+      - "3001:3001"
+    depends_on:
+      - mongodb
+
+  membre-service:
+    build: ./membre-service
+    ports:
+      - "3002:3002"
+    depends_on:
+      - mongodb
+
+  emprunt-service:
+    build: ./emprunt-service
+    ports:
+      - "3003:3003"
+    depends_on:
+      - mongodb
+
+  gateway:
+    build: ./gateway
+    ports:
+      - "3000:3000"
+    depends_on:
+      - livre-service
+      - membre-service
+      - emprunt-service
